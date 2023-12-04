@@ -1,5 +1,5 @@
 /*
-Day 3: Cube Conundrum (Part 2)
+Day 3: Gear Ratios (Part 2)
 https://adventofcode.com/2023/day/3
 */
 
