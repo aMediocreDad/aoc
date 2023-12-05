@@ -2,7 +2,7 @@
 Day 4: Scratchcards (Part 2)
 https://adventofcode.com/2023/day/4
 */
-use ::onig::Regex;
+use onig::Regex;
 use std::{collections::BTreeMap, str::Split};
 
 fn main() {

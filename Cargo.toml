@@ -5,3 +5,4 @@ members = ["_2023/*"]
 
 [workspace.dependencies]
 onig = { version = "6", default-features = false }
+rayon = "1.8"
