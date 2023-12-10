@@ -18,16 +18,17 @@ impl Set {
         }
     }
 
-    pub fn add_max(&mut self, color: &str, count: u8) {
+    fn add_max(mut self, color: &str, count: u8) -> Self {
         match color {
             "red" => self.red = Self::get_max(self.red, count),
             "green" => self.green = Self::get_max(self.green, count),
             "blue" => self.blue = Self::get_max(self.blue, count),
             _ => unreachable!(),
         }
+        self
     }
 
-    pub fn get_output(&self) -> u32 {
+    fn get_output(&self) -> u32 {
         self.red as u32 * self.green as u32 * self.blue as u32
     }
 }
@@ -41,25 +42,31 @@ fn main() {
 fn solution(input: &str) -> u32 {
     input
         .lines()
-        .filter_map(|line| {
+        .map(|line| {
             let mut iter = line.split(": ");
-            let _ = iter.next()?;
-            let sets = iter.next()?.split("; ");
-            let mut init = Set {
-                red: 0,
-                green: 0,
-                blue: 0,
-            };
-            for set in sets {
-                let iter = set.split(", ");
-                for s in iter {
-                    let mut iter = s.split(" ");
-                    let count = iter.next()?.parse::<u8>().unwrap();
-                    let color = iter.next()?;
-                    init.add_max(color, count);
-                }
-            }
-            Some(init.get_output())
+            let _ = iter.next();
+            let sets = iter.next().expect("We need a string of sets").split("; ");
+            return sets.map(|s| s.split(", "))
+                .flatten()
+                .map(|s| {
+                    let mut count_and_color = s.split(" ");
+                    let count = count_and_color
+                        .next()
+                        .expect("We need a count")
+                        .parse::<u8>()
+                        .expect("Count needs to be a number");
+                    let color = count_and_color.next().expect("We need a color");
+                    (color, count)
+                })
+                .fold(
+                    Set {
+                        red: 0,
+                        green: 0,
+                        blue: 0,
+                    },
+                    |set, (color, count)| set.add_max(color, count),
+                )
+                .get_output()
         })
         .sum()
 }
